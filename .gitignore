@@ -3,6 +3,11 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+# SQLite database files
+bookapi.db
+bookapi.db-shm
+bookapi.db-wal
+
 # dotenv files
 .env
 
