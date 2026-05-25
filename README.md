@@ -161,23 +161,26 @@ CreateMap<CreateAuthorDto, Author>();
 
 ## Prerequisites
 
-You need the **.NET 10 SDK** installed.
+You need the **.NET 10 SDK** installed. The repo includes a `global.json` that pins to SDK `10.0.300+` so Visual Studio and the CLI both use the correct toolchain automatically.
 
 **macOS**
 ```bash
-brew install dotnet
-# or download from https://dotnet.microsoft.com/download/dotnet/10.0
+# Download and install from:
+# https://dotnet.microsoft.com/download/dotnet/10.0
+# or via Homebrew (may lag behind latest release):
+brew install dotnet@10
 ```
 
 **Windows**
 ```powershell
 winget install Microsoft.DotNet.SDK.10 --accept-source-agreements
+# Restart your terminal after installing so PATH is refreshed
 ```
 
 Then verify and install EF tools:
 ```bash
 # Confirm .NET 10 is active
-dotnet --version
+dotnet --version   # should print 10.x.x
 
 # Install EF Core CLI tools globally (once)
 dotnet tool install --global dotnet-ef
@@ -193,7 +196,7 @@ dotnet ef --version
 ```bash
 # Clone the repo
 git clone https://github.com/zafir357/.NETCoreBookApi.git
-cd BookApi
+cd .NETCoreBookApi
 
 # Restore all NuGet packages
 dotnet restore
