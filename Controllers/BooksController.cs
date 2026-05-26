@@ -86,4 +86,25 @@ public class BooksController(AppDbContext db, IMapper mapper) : ControllerBase
 
         return Ok(mapper.Map<IEnumerable<BookDto>>(books));
     }
+
+    [HttpPut("{id}/authors")]
+    public async Task<IActionResult> UpdateAuthors(int id, UpdateBookAuthorsDto dto)
+    {
+        var book = await db.Books
+            .Include(b => b.BookAuthors)
+            .FirstOrDefaultAsync(b => b.Id == id);
+
+        if (book is null) return NotFound();
+
+        // Remove all existing author links
+        db.BookAuthors.RemoveRange(book.BookAuthors);
+
+        // Add the new ones
+        foreach (var authorId in dto.AuthorIds)
+            book.BookAuthors.Add(new BookAuthor { BookId = id, AuthorId = authorId });
+
+        await db.SaveChangesAsync();
+        return NoContent();
+    }
+
 }

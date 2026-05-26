@@ -29,3 +29,9 @@ public class UpdateBookDto
     public int Year { get; set; }
     public int? PublisherId { get; set; }
 }
+
+// Add this at the bottom of BookDTO.cs
+public class UpdateBookAuthorsDto
+{
+    public List<int> AuthorIds { get; set; } = [];
+}
