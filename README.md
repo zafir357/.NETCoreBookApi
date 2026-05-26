@@ -246,7 +246,24 @@ dotnet run --environment Production
 
 Open Swagger UI at:
 ```
-http://localhost:5280/swagger
+http://localhost:5280/swagger   # HTTP
+https://localhost:7293/swagger  # HTTPS
+```
+
+### HTTPS — Trust the dev certificate
+
+If Swagger shows **"Failed to fetch"** when executing requests on the HTTPS URL, the browser is blocking the self-signed certificate. Trust it once with:
+
+```bash
+dotnet dev-certs https --trust
+```
+
+Accept the Windows security dialog that appears, then **restart your browser completely** (close all windows). You only need to do this once per machine.
+
+To check whether the certificate is already trusted:
+
+```bash
+dotnet dev-certs https --check --trust
 ```
 
 ---
