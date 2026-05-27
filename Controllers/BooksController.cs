@@ -17,6 +17,7 @@ public class BooksController(AppDbContext db, IMapper mapper) : ControllerBase
         var books = await db.Books
             .Include(b => b.BookAuthors)
             .ThenInclude(ba => ba.Author)
+              .Include(b => b.Publisher)
             .ToListAsync();
 
         return Ok(mapper.Map<IEnumerable<BookDto>>(books));
@@ -28,6 +29,7 @@ public class BooksController(AppDbContext db, IMapper mapper) : ControllerBase
         var book = await db.Books
             .Include(b => b.BookAuthors)
             .ThenInclude(ba => ba.Author)
+            .Include(b => b.Publisher)
             .FirstOrDefaultAsync(b => b.Id == id);
 
         if (book is null) return NotFound();
