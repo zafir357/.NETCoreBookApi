@@ -62,4 +62,29 @@ public class PublishersController(AppDbContext db, IMapper mapper) : ControllerB
         await db.SaveChangesAsync();
         return NoContent();
     }
+
+    [HttpPut("{id}/books")]
+    public async Task<IActionResult> UpdateBooks(int id, [FromBody] UpdatePublisherBooksDto dto)
+    {
+        var publisher = await db.Publishers
+            .Include(p => p.Books)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (publisher is null) return NotFound();
+
+        // Remove publisher from all current books
+        foreach (var book in publisher.Books)
+            book.PublisherId = null;
+
+        // Assign publisher to new selected books
+        var newBooks = await db.Books
+            .Where(b => dto.BookIds.Contains(b.Id))
+            .ToListAsync();
+
+        foreach (var book in newBooks)
+            book.PublisherId = id;
+
+        await db.SaveChangesAsync();
+        return NoContent();
+    }
 }

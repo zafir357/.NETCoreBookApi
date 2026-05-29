@@ -65,4 +65,24 @@ public class AuthorsController(AppDbContext db, IMapper mapper) : ControllerBase
         await db.SaveChangesAsync();
         return NoContent();
     }
+
+    [HttpPut("{id}/books")]
+public async Task<IActionResult> UpdateBooks(int id, [FromBody] UpdateAuthorBooksDto dto)
+{
+    var author = await db.Authors
+        .Include(a => a.BookAuthors)
+        .FirstOrDefaultAsync(a => a.Id == id);
+
+    if (author is null) return NotFound();
+
+    // Remove all existing book links for this author
+    db.BookAuthors.RemoveRange(author.BookAuthors);
+
+    // Add new ones
+    foreach (var bookId in dto.BookIds)
+        author.BookAuthors.Add(new BookAuthor { AuthorId = id, BookId = bookId });
+
+    await db.SaveChangesAsync();
+    return NoContent();
+}
 }

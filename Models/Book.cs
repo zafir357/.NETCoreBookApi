@@ -1,15 +1,18 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace BookApi.Models;
 
 public class Book
 {
+    [Key]
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public int Year { get; set; }
 
-    // Foreign key to Publisher (nullable = book can exist without publisher)
+    [ForeignKey(nameof(Publisher))]
     public int? PublisherId { get; set; }
 
-    // Navigation property
     public Publisher? Publisher { get; set; }
 
     // Many-to-many navigation

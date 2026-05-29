@@ -19,9 +19,10 @@ public class MappingProfile : Profile
         CreateMap<Author, AuthorSummaryDto>();
 
         CreateMap<Author, AuthorDto>()
-            .ForMember(dest => dest.BookTitles,
-            opt => opt.MapFrom(src =>
-            src.BookAuthors.Select(ba => ba.Book.Title)));
+          .ForMember(dest => dest.Books,
+              opt => opt.MapFrom(src =>
+              src.BookAuthors.Select(ba => ba.Book)));
+        CreateMap<Book, BookSummaryDto>();
 
         // Publisher mappings
         CreateMap<Publisher, PublisherDto>()
@@ -36,5 +37,6 @@ public class MappingProfile : Profile
         CreateMap<CreateBookDto, Book>();
         CreateMap<UpdateBookDto, Book>();
         CreateMap<CreateAuthorDto, Author>();
+        CreateMap<UpdatePublisherDto, Publisher>();
     }
 }
